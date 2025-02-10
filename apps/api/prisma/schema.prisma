@@ -21,11 +21,11 @@ model User {
   referral_code        String
   password             String
   created_at           DateTime      @default(now())
-  update_at            DateTime      @updatedAt
+  updated_at           DateTime      @updatedAt
   role                 String
   point_balance        Int
-  point_expired_date   DateTime
-  email                String
+  point_expired_date   DateTime?
+  email                String        @unique
   friend_referral_code String? //nullable
   Transaction          Transaction[]
   Event                Event[]
@@ -76,7 +76,7 @@ model Promotion {
   start_date     DateTime
   end_date       DateTime
   voucher_name   String
-  voucher_amount String
+  voucher_amount Float
   organizer      User     @relation(fields: [organizer_id], references: [id])
   organizer_id   Int
   event          Event    @relation(fields: [event_id], references: [id])

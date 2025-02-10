@@ -5,7 +5,7 @@ import React from "react";
 
 const Navbar: React.FC = () => {
   return (
-    <nav className="bg-white border-b px-4 py-2 lg:sticky top-0 z-50">
+    <nav className="fixed bg-white border-b px-4 py-2 lg:sticky top-0 z-50">
       <div className="container mx-auto px-4 lg:px-12 flex flex-wrap justify-between items-center">
         <Link href="/" className="logo mb-2 lg:mb-0">
           <Image
@@ -28,12 +28,15 @@ const Navbar: React.FC = () => {
             </Link>
           </li>
           <li className="mr-4 lg:mr-0">
-            <Link href="/login" className="hover:underline text-black">
+            <Link
+              href="/api/auth/signin"
+              className="hover:underline text-black"
+            >
               Login
             </Link>
           </li>
           <li>
-            <Link href="/signup" className="hover:underline text-black">
+            <Link href="/register" className="hover:underline text-black">
               Sign Up
             </Link>
           </li>

@@ -1,0 +1,5 @@
+"first_name": "nadhif",
+  "last_name": "farizi",
+  "password": "password",
+  "email": "nadhif@mail.com",
+  "role": "customer"
