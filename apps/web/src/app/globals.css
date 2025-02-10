@@ -4,20 +4,15 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --foreground: #ededed;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  /* background-color: #f7f7f7; */
+  font-size: 14px;
+  /* font-family: '"DMSans-Regular"'; */
+  color: #ededed;
 }
 
 .container-categories {
@@ -33,7 +28,7 @@ body {
   margin: 4vh;
   gap: 8vh;
   border: 20px;
-  border-color: #fc9247;
+  border-color: #ffffff;
   box-shadow: 12px;
   max-width: 1272px;
   overflow-x: auto;
@@ -70,7 +65,7 @@ body {
   margin: 4vh auto;
   gap: 8vh;
   border: 20px;
-  border-color: #fc9247;
+  border-color: #ffffff;
   box-shadow: 12px;
   max-width: 1272px;
   overflow-x: auto;
@@ -78,21 +73,30 @@ body {
 }
 
 .card {
-  background-color: #fff9f9;
-  color: #fc9247;
+  background-color: rgb(163, 161, 160);
   padding: 20px;
   border-radius: 5px;
   cursor: pointer;
-  border: 2px solid #fc9247;
+  border: 2px;
+  box-shadow: 12px;
   transition: background-color 0.5s ease;
 }
 
 .buttonCarousel {
   background-color: transparent;
-  color: #fc9247;
+  color: #fff9f9;
   padding: 20px;
   border-radius: 5px;
   cursor: pointer;
-  border: 2px solid #fc9247;
   transition: background-color 0.5s ease;
+  box-shadow: 2vh;
+}
+
+.section-event {
+  display: flex;
+  justify-content: center;
+  margin: 4vh auto;
+  gap: 8vh;
+  border: 20px;
+  border-color: #fff9f9;
 }

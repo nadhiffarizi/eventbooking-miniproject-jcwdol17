@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 
 const Home: React.FC = () => {
   return (
-    <div className="container mx-auto bg-[#fc9247] text-black ">
+    <div className="container mx-auto bg-gray-200 text-black ">
       <Hero />
       <Event />
       <div className="rounded-full text-white py-8">

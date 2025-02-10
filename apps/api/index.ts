@@ -1,27 +1,31 @@
-import express, { Application, Request, Response } from 'express'
+import express, { Application, Request, Response } from "express";
+import { App } from "./app";
 
-const app: Application = express()
-const PORT = 8000
+// const app: Application = express()
+// const PORT = 8000
 
-app.use(express.json())
-app.listen(PORT, () => {
-    console.log("hello this is port: ", PORT);
+// app.use(express.json())
+// app.listen(PORT, () => {
+//     console.log("hello this is port: ", PORT);
 
-})
+// })
 
-//get register body
-app.post("/register", (req: Request, res: Response) => {
-    const message = req.body
-    res.status(200).send({
-        data_received: message
-    })
-})
+// // //get register body
+// // app.post("/register", (req: Request, res: Response) => {
+// //     const message = req.body
+// //     res.status(200).send({
+// //         data_received: message
+// //     })
+// // })
 
-// register body
-// {
-//     "first_name": "nadhif",
-//         "last_name": "farizi",
-//             "password": "testis",
-//                 "role": "user",
-//                     "email": "farizi@mail.com"
-// }
+// // // register body
+// // // {
+// // //     "first_name": "nadhif",
+// // //         "last_name": "farizi",
+// // //             "password": "testis",
+// // //                 "role": "user",
+// // //                     "email": "farizi@mail.com"
+// // // }
+
+const app = new App();
+app.start();

@@ -8,7 +8,7 @@ import {
 
 const Event: React.FC = () => {
   return (
-    <div className="flex flex-col mt-4">
+    <div className="flex flex-col border-b mt-4">
       <header className="flex items-center justify-between px-4 py-2 text-xl font-bold underline">
         <span>Ongoing Events</span>
         <button className="flex gap-2">

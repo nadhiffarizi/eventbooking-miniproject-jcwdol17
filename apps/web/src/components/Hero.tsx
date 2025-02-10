@@ -22,7 +22,7 @@ const Hero: React.FC = () => {
             captivating experiences, this event is designed to leave
             unforgettable memories.
           </p>
-          <Link href="/transaction">
+          <Link href="/cart">
             <button className="btn btn-primary text-lg lg:text-xl">
               Buy Ticket
             </button>

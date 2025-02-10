@@ -69,7 +69,7 @@ const cardsData: HeroCard[] = [
 
 const HeroEvents: React.FC = () => {
   return (
-    <div className="grid grid-cols-1 bg-[#fc9247] sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 p-4">
+    <div className="grid grid-cols-1 bg-gray-100 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 mt-8 gap-6 p-4">
       {cardsData.map((card, index) => (
         <div key={index} className="card shadow-xl">
           <figure className="px-4 pt-4">
@@ -81,7 +81,7 @@ const HeroEvents: React.FC = () => {
               height={200}
             />
           </figure>
-          <div className="card-body bg-[#fc9247] mt-4 shadow-2xl border-2 border-gray-700 rounded-[80%] items-center text-center">
+          <div className="card-body bg-slate-100 mt-4 shadow-2xl border-2 border-white rounded-[80%] items-center text-center">
             <h2 className="card-title text-black bold">{card.title}</h2>
             <p className="text-black">{card.description}</p>
             <div className="card-actions">

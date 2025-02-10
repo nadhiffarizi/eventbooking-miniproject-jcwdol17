@@ -21,7 +21,7 @@ const CreateEvents: React.FC = () => {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
       <Card className="w-full max-w-4xl shadow-xl">
         <CardContent>
-          <h1 className="text-2xl text-gray-800 font-bold mb-4 text-center">
+          <h1 className="text-2xl text-blue-600 font-bold mb-4 underline bold text-center">
             Create a New Event
           </h1>
 
@@ -107,6 +107,7 @@ const CreateEvents: React.FC = () => {
               <Select className="w-full">
                 <SelectItem value="standard">Standard</SelectItem>
                 <SelectItem value="vip">VIP</SelectItem>
+                <SelectItem value="vip">Standard & VIP</SelectItem>
               </Select>
             </div>
 

@@ -18,11 +18,6 @@ const Navbar: React.FC = () => {
         </Link>
         <ul className="flex flex-wrap lg:space-x-12 text-black mb-4 lg:mb-0">
           <li className="mr-4 lg:mr-0">
-            <Link href="/create-events" className="hover:underline text-black">
-              Create Events
-            </Link>
-          </li>
-          <li className="mr-4 lg:mr-0">
             <Link href="/events" className="hover:underline text-black">
               Events
             </Link>
