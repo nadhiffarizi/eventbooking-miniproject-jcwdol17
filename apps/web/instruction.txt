@@ -1,0 +1,5 @@
+1. create .env
+NEXT_PUBLIC_HOST
+
+2. create auth secret in .env.local
+AUTH_SECRET

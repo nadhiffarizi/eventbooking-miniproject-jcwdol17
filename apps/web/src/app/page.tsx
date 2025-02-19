@@ -1,40 +1,27 @@
 "use client";
-import { signOut, useSession } from "next-auth/react";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useState } from "react";
+import Event from "../components/Event";
+import Categories from "@/components/Categories";
+import Hero from "@/components/Hero";
+import EventJKT from "@/components/EventJKT";
+import Footer from "@/components/Footer";
+import ReviewCard from "@/components/review-card";
+import FeedbackForm from "@/components/UI-Components/feedback";
 
-export default function Home() {
-  const router = useRouter();
-  const { data: sesssion } = useSession();
+const Home: React.FC = () => {
+  const [hasPurchased, setHasPurchased] = useState<boolean>(false);
 
   return (
-    <div className=" flex flex-row gap-10 justify-center">
-      {sesssion?.user.accessToken ? (
-        <>
-          <h1>
-            Hello{" "}
-            <span className="text-yellow-500">{sesssion?.user.first_name}</span>
-          </h1>{" "}
-          <button onClick={() => signOut()}>SignOut</button>{" "}
-          <p>
-            {sesssion.user.role === "CUSTOMER" ? (
-              <>
-                <Link href={"/profile"}>Profile</Link>
-              </>
-            ) : (
-              <>Admin</>
-            )}
-          </p>
-        </>
-      ) : (
-        <>
-          <Link href={"/api/auth/signin"}>
-            <p>SignIn</p>
-          </Link>
-        </>
-      )}
+    <div className="container mx-auto bg-gray-200 text-black">
+      <Hero />
+      <Event />
+      <EventJKT />
+      <ReviewCard />
+      {hasPurchased && <FeedbackForm />}
+
+      <Footer />
     </div>
   );
-}
+};
+
+export default Home;

@@ -5,16 +5,16 @@ import SessionComponent from "@/components/hoc/SessionProvider.component";
 
 export const metadata: Metadata = {
   title: "Vitae",
-  description: "event booking marketplace",
+  description: "Booking Events Online Made Easy 🎉"
 };
 
 const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
-  subsets: ["latin"],
+  subsets: ["latin"]
 });
 
 export default function RootLayout({
-  children,
+  children
 }: Readonly<{
   children: React.ReactNode;
 }>) {

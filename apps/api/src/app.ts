@@ -3,6 +3,7 @@ import { userRoute } from "./routes/user.router";
 import { authRoute } from "./routes/auth.router";
 import { PORT } from "./config";
 import cors, { CorsOptions } from 'cors'
+import { eventRoute } from "./routes/event.router";
 
 export class App {
     private app: Application;
@@ -22,6 +23,7 @@ export class App {
     private routes() {
         this.app.use("/api/user", userRoute())
         this.app.use("/api/auth", authRoute())
+        this.app.use("/api/event", eventRoute())
     }
 
     public start() {

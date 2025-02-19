@@ -11,14 +11,107 @@
 
 :root {
   --theme-color: #d1410c;
-}
+  --background: #ffffff;
+  --foreground: #ededed;
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
-}
+  body {
+    font-family: Arial, Helvetica, sans-serif;
 
-@layer base {
-  :root {
-    --radius: 0.5rem;
+    margin: 0;
+    /* background-color: #f7f7f7; */
+    font-size: 14px;
+    /* font-family: '"DMSans-Regular"'; */
+  }
+
+  .container-categories {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    margin-top: 12px;
+  }
+
+  .button-group {
+    display: flex;
+    justify-content: center;
+    margin: 4vh;
+    gap: 8vh;
+    border: 20px;
+    border-color: #ffffff;
+    box-shadow: 12px;
+    max-width: 1272px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 100%;
+  }
+
+  .button {
+    background-color: #fff9f9;
+    color: #fc9247;
+    padding: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 2px solid #fc9247;
+    transition: background-color 0.5s ease;
+    width: 20vh;
+  }
+
+  .browse-by {
+    background-color: white;
+    color: #fc9247;
+    padding: 10px 10px;
+    border-radius: 5px;
+  }
+
+  .button:hover {
+    background-color: #fc9247;
+    color: black;
+  }
+
+  .event-jkt {
+    display: flex;
+    justify-content: center;
+    margin: 4vh auto;
+    gap: 8vh;
+    border: 20px;
+    border-color: #ffffff;
+    box-shadow: 12px;
+    max-width: 1272px;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  .card {
+    background-color: rgb(163, 161, 160);
+    padding: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 2px;
+    box-shadow: 12px;
+    transition: background-color 0.5s ease;
+  }
+
+  .buttonCarousel {
+    background-color: transparent;
+    color: #fff9f9;
+    padding: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.5s ease;
+    box-shadow: 2vh;
+  }
+
+  .section-event {
+    display: flex;
+    justify-content: center;
+    margin: 4vh auto;
+    gap: 8vh;
+    border: 20px;
+    border-color: #fff9f9;
+  }
+
+  @layer base {
+    :root {
+      --radius: 0.5rem;
+    }
   }
 }
