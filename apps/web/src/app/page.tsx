@@ -1,27 +1,24 @@
 "use client";
-"use client";
-import { signOut, useSession } from "next-auth/react";
+import { useState } from "react";
 import Event from "../components/Event";
 import Categories from "@/components/Categories";
 import Hero from "@/components/Hero";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 import EventJKT from "@/components/EventJKT";
 import Footer from "@/components/Footer";
+import ReviewCard from "@/components/review-card";
+import FeedbackForm from "@/components/UI-Components/feedback";
 
 const Home: React.FC = () => {
-  const router = useRouter();
-  const { data: sesssion } = useSession();
+  const [hasPurchased, setHasPurchased] = useState<boolean>(false);
 
   return (
-    <div className="container mx-auto bg-gray-200 text-black ">
+    <div className="container mx-auto bg-gray-200 text-black">
       <Hero />
       <Event />
-      <div className="rounded-full text-white py-8">
-        <Categories />
-      </div>
       <EventJKT />
+      <ReviewCard />
+      {hasPurchased && <FeedbackForm />}
+
       <Footer />
     </div>
   );

@@ -1,16 +1,15 @@
-import { NextFunction, Request, Response, Router } from "express"
-import authController from "../controller/auth.controller";
-import { verifyRefreshToken, verifyToken } from "../middlewares/authorize.middleware";
-
+import { NextFunction, Request, Response, Router } from "express";
+import eventController from "../controller/event.controller";
+import { verifyToken } from "../middlewares/authorize.middleware";
 
 export const eventRoute = () => {
-    const router = Router();
+  const router = Router();
 
-    router.get('/', (req: Request, res: Response, next: NextFunction) => {
-        res.status(200).send({
-            message: "test drive"
-        })
-    }) // callback
+  router.get("/get", eventController.getAllEvents);
+  router.get("/eventdetail/:id", eventController.eventDetail);
+  router.get("/search", eventController.searchEvent); // mau nge-GET data event di searchbar
+  router.post("/payment", eventController.payment); // route ke payment -> ke landing payment
+  // router.post("/create", verifyToken, eventController.createEvent);
 
-    return router
-}
+  return router;
+};

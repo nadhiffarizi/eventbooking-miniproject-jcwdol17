@@ -1,5 +1,7 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { Card } from "@/components/UI-Components/card";
 import { CardContent } from "@/components/UI-Components/cardContent";
 import { Button } from "@/components/UI-Components/button";
@@ -10,18 +12,35 @@ import { Select } from "@/components/UI-Components/select";
 import { SelectItem } from "@/components/UI-Components/SelectItem";
 
 const CreateEvents: React.FC = () => {
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const [isEventCreated, setIsEventCreated] = useState(false);
+
+  useEffect(() => {
+    if (status === "loading") return;
+    if (!session || session.user.role !== "organizer") {
+      router.push("/");
+    }
+  }, [session, status, router]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsEventCreated(true);
   };
 
+  if (status === "loading") {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-lg text-gray-600">Loading...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
       <Card className="w-full max-w-4xl shadow-xl">
         <CardContent>
-          <h1 className="text-2xl text-blue-600 font-bold mb-4 underline bold text-center">
+          <h1 className="text-2xl text-blue-600 font-bold mb-4 underline text-center">
             Create a New Event
           </h1>
 
@@ -40,7 +59,7 @@ const CreateEvents: React.FC = () => {
                 type="text"
                 placeholder="Enter event name"
                 className="w-full"
-                required={true}
+                required
               />
             </div>
 
@@ -52,7 +71,7 @@ const CreateEvents: React.FC = () => {
                 <Calendar
                   placeholder="Select start date"
                   className="w-full"
-                  required={true}
+                  required
                 />
               </div>
               <div>
@@ -62,7 +81,7 @@ const CreateEvents: React.FC = () => {
                 <Calendar
                   placeholder="Select end date"
                   className="w-full"
-                  required={true}
+                  required
                 />
               </div>
             </div>
@@ -75,7 +94,7 @@ const CreateEvents: React.FC = () => {
                 type="number"
                 placeholder="Enter price"
                 className="w-full"
-                required={true}
+                required
               />
             </div>
 
@@ -107,7 +126,7 @@ const CreateEvents: React.FC = () => {
               <Select className="w-full">
                 <SelectItem value="standard">Standard</SelectItem>
                 <SelectItem value="vip">VIP</SelectItem>
-                <SelectItem value="vip">Standard & VIP</SelectItem>
+                <SelectItem value="standard-vip">Standard & VIP</SelectItem>
               </Select>
             </div>
 
