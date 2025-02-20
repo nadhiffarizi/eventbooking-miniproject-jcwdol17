@@ -43,7 +43,7 @@ const Event: React.FC = () => {
         <div className="flex gap-4">
           {events.map((event) => (
             <Link
-              href={`/event-detail/${event.id}`}
+              href={`/eventdetail/${event.id}`}
               key={event.id}
               className="min-w-[250px]"
             >

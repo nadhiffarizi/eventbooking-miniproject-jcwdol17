@@ -12,7 +12,7 @@ const Events: React.FC = () => {
 
   useEffect(() => {
     const fetchUserRole = async () => {
-      if (session?.user.role === "organizer") {
+      if (session?.user.role === "ORGANIZER") {
         // try {
         //   const res = await fetch(`${serverHost}api/event/get`, {
         //     method: "GET"
@@ -31,7 +31,7 @@ const Events: React.FC = () => {
 
   return (
     <div className="container mx-auto px-auto pt-4 bg-white">
-      {userRole === "organizer" && (
+      {userRole === "ORGANIZER" && (
         <Link className="flex mt-4 pt-4 justify-center" href="/events/create">
           <button className="border hover:scale-110 transition duration-300 ease-in-out hover:text-white hover:bg-blue-500 text-black bg-primary py-2 px-4 rounded flex justify-center items-center">
             Create New Event

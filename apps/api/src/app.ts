@@ -27,6 +27,9 @@ export class App {
     private routes() {
         this.app.use("/api/user", userRoute())
         this.app.use("/api/auth", authRoute())
+        this.app.use("/api/event", eventRoute())
+        this.app.use("/api/transaction", transactionRoute())
+        this.app.use("/api/dashboard", dashboardRoute())
     }
 
     private cronJobs() {
