@@ -331,7 +331,71 @@ class EventService {
 
     }
 
+    public async payment(req: Request): Promise<any> {
+        try {
+            const events = await prisma.event.findMany();
+            return {
+                status: statusEnum.SUCCESS,
+                data: events
+            };
+        } catch (error) {
+            console.error("Error fetching events:", error);
+            throw new Error("Unable to fetch events");
+        }
+    }
+
+    public async searchEvent(req: Request): Promise<any> {
+        const { query } = req.query;
+        try {
+            const events = await prisma.event.findMany({
+                where: {
+                    event_name: {
+                        contains: String(query)
+                    }
+                }
+            });
+            return {
+                status: statusEnum.SUCCESS,
+                data: events
+            };
+        } catch (error) {
+            console.error("Error fetching events:", error);
+            throw new Error("Unable to fetch events");
+        }
+    }
+
+    public async eventDetail(req: Request): Promise<any> {
+        const { id } = req.params;
+        try {
+            const events = await prisma.event.findUnique({
+                where: {
+                    id: Number(id)
+                }
+            });
+            return {
+                status: statusEnum.SUCCESS,
+                data: events
+            };
+        } catch (error) {
+            console.error("Error fetching events:", error);
+            throw new Error("Unable to fetch events");
+        }
+    }
+
+    // Get all events
+    public async getAllEvents(): Promise<any> {
+        try {
+            const events = await prisma.event.findMany();
+            return {
+                status: statusEnum.SUCCESS,
+                data: events
+            };
+        } catch (error) {
+            console.error("Error fetching events:", error);
+            throw new Error("Unable to fetch events");
+        }
+    }
 
 }
 
-export default new EventService();
+export default new EventService()

@@ -15,6 +15,7 @@ const Home: React.FC = () => {
   const [hasPurchased, setHasPurchased] = useState<boolean>(false);
   const router = useRouter();
   const { data: sesssion } = useSession();
+
   return (
     <div className="container mx-auto bg-gray-200 text-black">
       <Hero />

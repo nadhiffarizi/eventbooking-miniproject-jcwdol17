@@ -1,99 +1,139 @@
-import React from "react";
-import Image from "next/image";
+"use client";
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { serverHost } from "@/config";
 
-interface HeroCard {
-  title: string;
+interface Event {
+  id: number;
+  event_name: string;
+  image_url: string;
   description: string;
-  imageUrl: string;
-  buttonText: string;
+  location: string;
 }
 
-const cardsData: HeroCard[] = [
-  {
-    title: "Shoes!",
-    description: "If a dog chews shoes whose shoes does he choose?",
-    imageUrl:
-      "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp",
-    buttonText: "Buy Ticket"
-  },
-  {
-    title: "Hats!",
-    description: "Protect your head in style.",
-    imageUrl:
-      "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp",
-    buttonText: "Buy Ticket"
-  },
-  {
-    title: "Bags!",
-    description: "Carry your essentials anywhere.",
-    imageUrl:
-      "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp",
-    buttonText: "Buy Ticket"
-  },
-  {
-    title: "Watches!",
-    description: "Time is precious, wear it well.",
-    imageUrl:
-      "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp",
-    buttonText: "Buy Ticket"
-  },
-  {
-    title: "Watches!",
-    description: "Time is precious, wear it well.",
-    imageUrl:
-      "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp",
-    buttonText: "Buy Ticket"
-  },
-  {
-    title: "Watches!",
-    description: "Time is precious, wear it well.",
-    imageUrl:
-      "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp",
-    buttonText: "Buy Ticket"
-  },
-  {
-    title: "Watches!",
-    description: "Time is precious, wear it well.",
-    imageUrl:
-      "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp",
-    buttonText: "Buy Ticket"
-  },
-  {
-    title: "Watches!",
-    description: "Time is precious, wear it well.",
-    imageUrl:
-      "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp",
-    buttonText: "Buy Ticket"
-  }
-];
+const Event: React.FC = () => {
+  const { data: session } = useSession();
+  const isOrganizer = session?.user?.role === "organizer";
 
-const HeroEvents: React.FC = () => {
+  const [events, setEvents] = useState<Event[]>([]);
+  const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
+  const [selectedLocation, setSelectedLocation] = useState<string>("");
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const res = await fetch(`${serverHost}api/event/get`, {
+          method: "GET"
+        });
+        const data = await res.json();
+
+        if (data && data.data) {
+          setEvents(data.data);
+          setFilteredEvents(data.data);
+        } else {
+          console.error("Unexpected response structure:", data);
+        }
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const query =
+        new URLSearchParams(window.location.search).get("search") || "";
+      setSearchQuery(query);
+    }
+  }, []);
+
+  useEffect(() => {
+    const filtered = searchQuery
+      ? events.filter((event) =>
+          event.event_name.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+      : events;
+
+    setFilteredEvents(filtered);
+  }, [searchQuery, events]);
+
+  const handleLocationChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const location = event.target.value;
+    setSelectedLocation(location);
+
+    const filtered = location
+      ? events.filter((event) => event.location === location)
+      : events;
+
+    setFilteredEvents(filtered);
+  };
+
+  const locations = Array.from(new Set(events.map((event) => event.location)));
+
   return (
-    <div className="grid grid-cols-1 bg-gray-100 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 mt-8 gap-6 p-4">
-      {cardsData.map((card, index) => (
-        <div key={index} className="card shadow-xl">
-          <figure className="px-4 pt-4">
-            <Image
-              src={card.imageUrl}
-              alt={card.title}
-              className="rounded-xl"
-              width={200}
-              height={200}
-            />
-          </figure>
-          <div className="card-body bg-slate-100 mt-4 shadow-2xl border-2 border-white rounded-[80%] items-center text-center">
-            <h2 className="card-title text-black bold">{card.title}</h2>
-            <p className="text-black">{card.description}</p>
-            <div className="card-actions">
-              <button className="btn btn-primary hover:bg-white hover:border-white hover:scale-110 transition duration-300 ease-in-out">
-                {card.buttonText}
-              </button>
-            </div>
-          </div>
+    <div className="flex flex-col border-b mt-4">
+      <header className="flex items-center justify-between px-4 py-2 text-xl font-bold underline">
+        <select
+          value={selectedLocation}
+          onChange={handleLocationChange}
+          className="ml-4 p-2 border rounded">
+          <option value="">All Locations</option>
+          {locations.map((location) => (
+            <option key={location} value={location}>
+              {location}
+            </option>
+          ))}
+        </select>
+
+        {/* Hanya organizer yang bisa melihat tombol "Create Event" */}
+        {isOrganizer && (
+          <Link href="/createevent">
+            <button className="p-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700">
+              + Create Event
+            </button>
+          </Link>
+        )}
+      </header>
+
+      <section className="section-event overflow-x-auto py-4 mt-4">
+        <div className="flex gap-4">
+          {filteredEvents.map((event) => (
+            <Link
+              href={`/eventdetail/${event.id}`}
+              key={event.id}
+              className="min-w-[250px]">
+              <div className="card bg-white shadow-xl">
+                <figure>
+                  <img
+                    src={
+                      event.image_url ||
+                      "https://cdn.pixabay.com/photo/2023/04/03/12/59/crowd-7896788_1280.jpg"
+                    }
+                    width={250}
+                    height={200}
+                    alt={event.event_name}
+                    className="object-cover"
+                  />
+                </figure>
+                <div className="card-body p-4">
+                  <h2 className="card-title text-lg text-black font-semibold">
+                    {event.event_name}
+                  </h2>
+                  <p className="text-sm mt-2 text-black">{event.description}</p>
+                </div>
+              </div>
+            </Link>
+          ))}
         </div>
-      ))}
+      </section>
     </div>
   );
 };
 
-export default HeroEvents;
+export default Event;
