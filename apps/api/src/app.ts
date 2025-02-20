@@ -29,6 +29,16 @@ export class App {
         this.app.use("/api/auth", authRoute())
     }
 
+    private cronJobs() {
+        // cron.schedule('*/2 * * * * *', () => {
+        //     // console.log('running every secod');
+        //     console.log((new Date()));
+        // })
+
+        cronPointExpiry()
+        cronCouponExpiry()
+    }
+
     public start() {
         this.app.listen(PORT, () => {
             console.log("api listening from ", PORT);
