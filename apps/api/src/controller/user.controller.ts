@@ -2,6 +2,7 @@ import { NextFunction } from "express";
 import { Request, Response } from "express";
 import userService from "../services/user.service";
 import { responseHandler } from "../helper/responseHandler.helper";
+import { getUserByEmail } from "../helper/AuthService/authService.helper";
 
 
 class UserController {
@@ -41,7 +42,7 @@ class UserController {
     // upload avatar
     public async updateAvatar(req: Request, res: Response, next: NextFunction) {
         try {
-            // try getting user
+            // try update avatar
             const feedback = await userService.updateAvatar(req)
             responseHandler(res, feedback.message, feedback.status, feedback.data, feedback.code)
         } catch (error) {
@@ -51,7 +52,13 @@ class UserController {
 
     // update user 
     public async updateUser(req: Request, res: Response, next: NextFunction) {
-
+        try {
+            // try update user data
+            const feedback = await userService.updateUser(req)
+            responseHandler(res, feedback.message, feedback.status, feedback.data, feedback.code)
+        } catch (error) {
+            next(error)
+        }
     }
 }
 

@@ -5,7 +5,7 @@ import { User } from "@prisma/client";
 import { generateRandomString } from "ts-randomstring/lib";
 import { calculateDeadline } from "../date.helper";
 import { statusEnum } from "../statusEnum.helper";
-import { compare, compareSync } from "bcrypt";
+import cron from 'node-cron'
 
 // user data completion check
 export const userDataCompletionCheck = (req: Request) => {
@@ -33,7 +33,7 @@ export const userDataCompletionCheck = (req: Request) => {
 export const userExistCheck = async (req: Request, mode: string) => {
     const { email } = req.body
     // check if registered email already exist
-    console.log(email);
+    // console.log(email);
 
     const storedData = await prisma.user.findUnique({
         where: {
@@ -87,7 +87,9 @@ export const userExistCheck = async (req: Request, mode: string) => {
 
 // get friend referral if available
 export const getFriendReferral = async (inputReferralCode: string) => {
+
     if (!inputReferralCode) return null
+    // console.log("use referral code: ", inputReferralCode);
 
     // check friend referral
     const friend = await prisma.user.findFirst({
@@ -101,13 +103,15 @@ export const getFriendReferral = async (inputReferralCode: string) => {
     // update friend points
     await prisma.user.update({
         where: {
-            email: friend.email
+            email: friend.email,
         }, data: {
             point_balance: friend.point_balance + 10000,
-            point_expired_date: calculateDeadline(new Date(), 30), // nanti handle date
+            point_expired_date: calculateDeadline(friend.point_expired_date, 30), // nanti handle date
             updated_at: new Date(Date.now())
         }
     })
+
+
     return inputReferralCode;
 
 }
@@ -149,6 +153,22 @@ export const generateReferralCode = async (inputFirstName: string) => {
     }
 
     return refCode.toUpperCase()
+
+}
+
+// add coupon if applicable
+export const addCoupon = async (inputReferralCode: string) => {
+    if (!inputReferralCode) return 0
+
+    return 5000 // if the user registered using referral code, then he/she gets 5000 coupon
+}
+
+// coupon expiry date
+export const couponExpiry = async (inputReferralCode: string) => {
+    if (!inputReferralCode) return null
+
+    const expDate = calculateDeadline(new Date(), 30 * 3)
+    return expDate
 
 }
 

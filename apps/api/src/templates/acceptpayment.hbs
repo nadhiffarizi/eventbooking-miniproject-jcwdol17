@@ -1,0 +1,44 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vitae: Accepted Payment</title>
+  </head>
+  <body>
+    <h1>
+      {{name}}, your payment has been approved.
+    </h1>
+
+    <p>
+      You received this email because your payment has been approved for
+      {{event_name}}.
+    </p>
+    <div>
+      Please check details below:
+      <ul style="list-style-type: none;">
+        <li>
+          Event Name:
+          {{event_name}}
+        </li>
+        <li>
+          Event Time:
+          {{date}}
+        </li>
+        <li>
+          Location:
+          {{location}}
+        </li>
+        <li>
+          Amount Paid:
+          {{amount}}
+        </li>
+      </ul>
+    </div>
+    <p>
+      See you there!
+    </p>
+    <p>
+      Vitae Team
+    </p>
+  </body>
+</html>

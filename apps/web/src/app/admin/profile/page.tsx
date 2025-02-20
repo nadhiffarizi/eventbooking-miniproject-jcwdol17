@@ -26,7 +26,7 @@ interface IUserProfile {
   coupon_expired?: Date | null | string;
 }
 
-export default function Profile() {
+export default function AdminProfile() {
   const { data: session, update, status } = useSession();
   const ref = useRef<HTMLInputElement>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -162,12 +162,6 @@ export default function Profile() {
                 String(session?.user.first_name).substring(1)}
             </span>
           </h1>
-          <div className="flex flex-col items-end justify-start w-[500px]">
-            <h1 className="text-lg">
-              Points: Rp. {Number(userData?.point_balance)}
-            </h1>
-            <h1 className="text-lg">Coupon: Rp. {Number(userData?.coupon)}</h1>
-          </div>
         </div>
         <div className="w-full h-[600px] flex justify-end ">
           <div className="w-full h-full py-10 px-32 shadow-md rounded-lg ring-slate-200 ring-2  bg-white">
@@ -181,13 +175,17 @@ export default function Profile() {
                 <div className="flex flex-col gap-1 items-center w-full h-full row-span-2 ">
                   {/**Image */}
                   <div className="w-1/2 max-w-[110px] h-5/6  ">
-                    <img
-                      className="w-full h-full object-cover rounded-full ring-2 "
-                      src={
-                        `${session?.user.image_url}` ||
-                        "../../asset/login-image.jpg"
-                      }
-                    />
+                    {session?.user.image_url ? (
+                      <img
+                        className="w-full h-full object-cover rounded-full ring-2 "
+                        src={`${session?.user.image_url}`}
+                      />
+                    ) : (
+                      <img
+                        className="w-full h-full object-cover rounded-full ring-2 "
+                        src={`../../../../asset/default-profile.png`}
+                      />
+                    )}
                   </div>
 
                   <div className="flex justify-center w-1/2 max-w-[110px] h-1/6 ">

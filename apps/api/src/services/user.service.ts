@@ -6,6 +6,8 @@ import { hashedPassword } from "../helper/bcrypt";
 import { generateRandomString } from "ts-randomstring/lib";
 import { sendEmailForgetPass } from "../helper/User/userService.helper";
 import { cloudinaryUpload } from "../helper/cloudinary";
+import { getUserByEmail } from "../helper/AuthService/authService.helper";
+import { compare } from "bcrypt";
 
 class UserService {
 
@@ -14,7 +16,7 @@ class UserService {
 
         // the user has to be exist, if not cannot route to /api/user/profile
 
-        const { email } = req.body
+        const email = req.user?.email! as string
         const userData = await prisma.user.findUnique({
             where: {
                 email
@@ -33,13 +35,22 @@ class UserService {
 
             return feedback;
 
-
-
         } else {
+
             const feedback: serviceFeedback = {
                 code: 200,
-                data: userData,
-                message: 'Server',
+                data: {
+                    "first_name": userData.first_name,
+                    "last_name": userData.last_name,
+                    "email": userData.email,
+                    "referral_code": userData.referral_code,
+                    "point_balance": userData.point_balance,
+                    "point_expired_date": userData.point_expired_date ? (userData.point_expired_date.toISOString()) : null,
+                    "coupon": userData.coupon,
+                    "coupon_expired": userData.coupon_expired ? (userData.coupon_expired).toISOString() : null,
+
+                },
+                message: 'Get user data success',
                 status: statusEnum.SUCCESS
             }
             return feedback
@@ -88,7 +99,7 @@ class UserService {
             // throw feedback
             const feedback: serviceFeedback = {
                 code: 200,
-                data: newPass,
+                data: null,
                 message: 'password has been reset successfully ',
                 status: statusEnum.SUCCESS
             }
@@ -120,6 +131,77 @@ class UserService {
             status: statusEnum.SUCCESS
         }
         return feedback
+    }
+
+    // update user data
+    public async updateUser(req: Request) {
+        const { first_name, last_name, current_password, new_password } = req.body
+        const email = req.user?.email as string
+
+        if (!first_name || !last_name) throw new Error("first_name and last_name must be completed")
+
+        // only change first_name/last_name
+        if (!current_password && !new_password) {
+            // update profile data
+            const userData = await prisma.user.update({
+                where: {
+                    email
+                },
+                data: {
+                    first_name: first_name,
+                    last_name: last_name,
+                }
+            })
+
+            const feedback: serviceFeedback = {
+                code: 200,
+                data: null,
+                message: 'updated user data, first name and last name ',
+                status: statusEnum.SUCCESS
+            }
+            return feedback
+        } else {
+            // get user
+            const userData = await getUserByEmail(email)
+
+            // check password
+            const currentPassCheck = await compare(current_password, userData?.password!)
+            if (!currentPassCheck) {
+                const feedback: serviceFeedback = {
+                    code: 400,
+                    data: { ...userData, currentPassCheck },
+                    message: 'updating password: wrong current password ',
+                    status: statusEnum.FAILED
+                }
+                return feedback
+            } else {
+                // update profile data
+                await prisma.user.update({
+                    where: {
+                        email
+                    },
+                    data: {
+                        first_name: first_name,
+                        last_name: last_name,
+                        password: await hashedPassword(new_password, 10)
+                    }
+                })
+
+                const feedback: serviceFeedback = {
+                    code: 200,
+                    data: null,
+                    message: 'updated user data and password',
+                    status: statusEnum.SUCCESS
+                }
+                return feedback
+            }
+        }
+
+
+
+
+
+
     }
 }
 
