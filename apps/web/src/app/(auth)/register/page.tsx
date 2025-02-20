@@ -40,7 +40,7 @@ export default function Register() {
       first_name: "",
       last_name: "",
       password: "",
-      refCode: "",
+      referral_code: "",
     },
     onSubmit: async (values) => {
       // alert(
@@ -241,19 +241,18 @@ export default function Register() {
                             >
                               {
                                 <p>
-                                  {!formik.errors.refCode
+                                  {!formik.errors.referral_code
                                     ? "Enter your Referral code"
-                                    : formik.errors.refCode}
+                                    : formik.errors.referral_code}
                                 </p>
                               }
                             </label>
                             <Input
-                              type="refCode"
                               className="w-full h-full placeholder:text-base rounded-none border-b-2 focus-visible:border-red-400 border-red-200 focus-within:h-4/5 focus:placeholder:text-transparent focus:bg-transparent"
                               placeholder="Referral Code"
-                              name="refCode"
+                              name="referral_code"
                               id="referralCodeInput"
-                              value={formik.values.refCode}
+                              value={formik.values.referral_code}
                               onChange={formik.handleChange}
                             />
                           </div>

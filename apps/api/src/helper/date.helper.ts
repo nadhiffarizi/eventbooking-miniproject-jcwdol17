@@ -1,5 +1,14 @@
-export const calculateDeadline = (now: Date, exp: number) => {
-    const expDate = new Date(now.setDate(now.getDate() + exp))
+export const calculateDeadline = (now: Date | null, exp: number) => {
 
-    return expDate
+    if (!now) {
+        const now = new Date()
+        return now
+
+    } else {
+        now.setDate(now.getDate() + exp)
+        return now
+    }
+
+
+
 }

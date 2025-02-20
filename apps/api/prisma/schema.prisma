@@ -27,6 +27,8 @@ model User {
   point_expired_date   DateTime?
   email                String        @unique
   friend_referral_code String? //nullable
+  coupon               Float
+  coupon_expired       DateTime?
   Transaction          Transaction[]
   Event                Event[]
   Promotion            Promotion[]
@@ -51,22 +53,23 @@ model Transaction {
 }
 
 model Event {
-  id           Int           @id @default(autoincrement())
-  speaker      String
-  event_name   String
-  location     String
-  slug         String        @unique
-  created_at   DateTime
-  date         DateTime
-  capacity     Int
-  price        Float
-  description  String
-  image_url    String
-  organizer    User          @relation(fields: [organizer_id], references: [id])
-  organizer_id Int
-  Transaction  Transaction[]
-  Promotion    Promotion[]
-  Review       Review[]
+  id             Int           @id @default(autoincrement())
+  speaker        String
+  event_name     String
+  location       String
+  slug           String        @unique
+  created_at     DateTime
+  date           DateTime
+  capacity       Int
+  seat_available Int
+  price          Float
+  description    String
+  image_url      String
+  organizer      User          @relation(fields: [organizer_id], references: [id])
+  organizer_id   Int
+  Transaction    Transaction[]
+  Promotion      Promotion[]
+  Review         Review[]
 
   @@map("events")
 }

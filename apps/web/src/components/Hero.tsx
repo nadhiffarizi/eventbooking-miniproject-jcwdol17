@@ -1,32 +1,91 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { serverHost } from "@/config";
+
+interface Event {
+  id: number;
+  event_name: string;
+  image_url: string;
+  description: string;
+  price: number;
+  total?: number;
+  subtotal?: number;
+}
 
 const Hero: React.FC = () => {
+  const router = useRouter();
+  const [event, setEvent] = useState<Event | null>(null);
+  const [tickets, setTickets] = useState<Event[]>([]);
+
+  useEffect(() => {
+    const fetchEvent = async () => {
+      try {
+        const res = await fetch(`${serverHost}api/event/get`, {
+          method: "GET",
+        });
+        const data = await res.json();
+        setEvent(data["data"][0]);
+      } catch (error) {
+        console.error("Error fetching event:", error);
+      }
+    };
+
+    fetchEvent();
+  }, []);
+
+  useEffect(() => {
+    if (event) {
+      setTickets([
+        {
+          id: event.id,
+          event_name: event.event_name,
+          price: event.price,
+          image_url: event.image_url,
+          description: event.description,
+        },
+      ]);
+    }
+  }, [event]);
+
+  const handleGetTickets = () => {
+    const ticketString = encodeURIComponent(JSON.stringify(tickets));
+    router.push(`/payment?tickets=${ticketString}`);
+  };
+
+  if (!event) return <p>Loading event details...</p>;
+
   return (
-    <div className="hero bg-[#f9f9f9] h-[60vh] rounded-[80%] shadow-2xl pt-8 px-4 py-8 lg:py-12">
-      <div className="hero-content flex-col lg:flex-row items-center lg:items-start text-center lg:text-left">
-        <Image
-          src="https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp"
-          alt="Top Event"
-          className="max-w-sm rounded-lg shadow-2xl"
-          width={500}
-          height={600}
-        />
-        <div className="mt-6 lg:mt-0 lg:ml-10">
-          <h1 className="text-3xl lg:text-5xl font-bold">Event of The Year</h1>
-          <p className="py-4 lg:py-6">
-            Get ready for the event that will shake up the year! Vitae Ceremony
-            is the pinnacle of excitement, innovation, and entertainment.
-            Featuring outstanding performances, interactive activities, and
-            captivating experiences, this event is designed to leave
-            unforgettable memories.
+    <div className="relative bg-gradient-to-r from-yellow-300 to-red-500 h-[70vh] rounded-[70%] shadow-2xl flex items-center justify-center px-6 lg:px-12">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl items-center">
+        <div className="flex justify-center">
+          <img
+            src={
+              event.image_url ||
+              "https://cdn.pixabay.com/photo/2023/04/03/12/59/crowd-7896788_1280.jpg"
+            }
+            alt={event.event_name}
+            className="rounded-2xl shadow-xl"
+            width={300}
+            height={150}
+          />
+        </div>
+
+        <div className="text-center lg:text-left text-white">
+          <h1 className="text-4xl lg:text-6xl font-extrabold leading-tight">
+            {event.event_name}
+          </h1>
+          <p className="py-4 lg:py-6 text-lg lg:text-xl">
+            Get ready for an event that will redefine excitement!
           </p>
-          <Link href="/cart">
-            <button className="btn btn-primary text-lg lg:text-xl">
-              Buy Ticket
-            </button>
-          </Link>
+          <button
+            onClick={handleGetTickets}
+            className="mt-4 px-6 py-3 bg-white text-red-600 font-semibold rounded-lg text-lg lg:text-xl shadow-md hover:bg-red-100 transition-all"
+          >
+            Buy Ticket
+          </button>
         </div>
       </div>
     </div>

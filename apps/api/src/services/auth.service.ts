@@ -2,7 +2,7 @@ import { Request } from "express";
 import { jwtAccessSecret, jwtRefreshSecret, prisma } from "../config";
 import { hashedPassword } from "../helper/bcrypt";
 import { serviceFeedback } from "../interface/serviceFeedback.interface";
-import { userDataCompletionCheck, userExistCheck, getFriendReferral, generateReferralCode } from "../helper/AuthService/authService.helper";
+import { userDataCompletionCheck, userExistCheck, getFriendReferral, generateReferralCode, addCoupon, couponExpiry } from "../helper/AuthService/authService.helper";
 import { statusEnum } from "../helper/statusEnum.helper";
 import { sign } from "jsonwebtoken";
 import { userLogin } from "../interface/userAuthorize.interface";
@@ -26,14 +26,15 @@ class AuthService {
         }
 
         // destructure data
-        const { first_name, last_name, password, role, email, friend_referral_code } = req.body
+        const { first_name, last_name, password, role, email, referral_code } = req.body
 
         // 
         // generate new user
         const hashedPass = await hashedPassword(password, 10)
 
-        try {
 
+
+        try {
             await prisma.user.create({
                 data: {
                     image_url: null,
@@ -42,10 +43,13 @@ class AuthService {
                     last_name: last_name,
                     password: hashedPass,
                     role: (role as string).toUpperCase(),
-                    friend_referral_code: friend_referral_code,
+                    friend_referral_code: await getFriendReferral(referral_code),
                     created_at: new Date(),
                     point_balance: 0,
-                    referral_code: await generateReferralCode(first_name)
+                    point_expired_date: null,
+                    referral_code: await generateReferralCode(first_name),
+                    coupon: await addCoupon(referral_code),
+                    coupon_expired: await couponExpiry(referral_code)
                 }
             })
             const feedback: serviceFeedback = {
