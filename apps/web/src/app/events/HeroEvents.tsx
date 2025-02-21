@@ -25,7 +25,7 @@ const Event: React.FC = () => {
     const fetchEvents = async () => {
       try {
         const res = await fetch(`${serverHost}api/event/get`, {
-          method: "GET",
+          method: "GET"
         });
         const data = await res.json();
 
@@ -82,8 +82,7 @@ const Event: React.FC = () => {
         <select
           value={selectedLocation}
           onChange={handleLocationChange}
-          className="ml-4 p-2 border rounded"
-        >
+          className="ml-4 p-2 border rounded">
           <option value="">All Locations</option>
           {locations.map((location) => (
             <option key={location} value={location}>
@@ -108,8 +107,7 @@ const Event: React.FC = () => {
             <Link
               href={`/eventdetail/${event.id}`}
               key={event.id}
-              className="min-w-[250px]"
-            >
+              className="min-w-[250px]">
               <div className="card bg-white shadow-xl">
                 <figure>
                   <img

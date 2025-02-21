@@ -24,7 +24,7 @@ const Hero: React.FC = () => {
     const fetchEvent = async () => {
       try {
         const res = await fetch(`${serverHost}api/event/get`, {
-          method: "GET",
+          method: "GET"
         });
         const data = await res.json();
         setEvent(data["data"][0]);
@@ -44,15 +44,15 @@ const Hero: React.FC = () => {
           event_name: event.event_name,
           price: event.price,
           image_url: event.image_url,
-          description: event.description,
-        },
+          description: event.description
+        }
       ]);
     }
   }, [event]);
 
   const handleGetTickets = () => {
     const ticketString = encodeURIComponent(JSON.stringify(tickets));
-    router.push(`/payment?tickets=${ticketString}`);
+    router.push(`/payment/${event?.id}`);
   };
 
   if (!event) return <p>Loading event details...</p>;
@@ -82,8 +82,7 @@ const Hero: React.FC = () => {
           </p>
           <button
             onClick={handleGetTickets}
-            className="mt-4 px-6 py-3 bg-white text-red-600 font-semibold rounded-lg text-lg lg:text-xl shadow-md hover:bg-red-100 transition-all"
-          >
+            className="mt-4 px-6 py-3 bg-white text-red-600 font-semibold rounded-lg text-lg lg:text-xl shadow-md hover:bg-red-100 transition-all">
             Buy Ticket
           </button>
         </div>

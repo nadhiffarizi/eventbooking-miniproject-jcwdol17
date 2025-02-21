@@ -2,84 +2,20 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
-import { User } from "next-auth";
-import { signOut, useSession } from "next-auth/react";
+import React, { useState } from "react";
+import { useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { serverHost } from "@/config";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 
-const Navbar: React.FC<{}> = () => {
-  const { data: session, status } = useSession();
-  const [roleState, setRole] = useState<string | undefined>("CUSTOMER");
+const Navbar: React.FC = () => {
+  const { data: session } = useSession();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
-  useEffect(() => {
-    if (status === "authenticated") {
-      setRole(session.user.role);
-    }
-  }, [status]);
-
-  const conditionalNavbar = () => {
-    if (session?.user.accessToken) {
-      // user logged in
-      return (
-        <>
-          {session.user.role === "CUSTOMER" ? (
-            <li className="mr-4 lg:mr-0">
-              <Link href="/profile" className="hover:underline text-black">
-                Profile
-              </Link>
-            </li>
-          ) : (
-            <li className="mr-4 lg:mr-0">
-              <Link
-                href="/admin/dashboard"
-                className="hover:underline text-black"
-              >
-                Dashboard
-              </Link>
-            </li>
-          )}
-
-          <li>
-            <button
-              onClick={() => signOut()}
-              className="hover:underline text-black"
-            >
-              Logout
-            </button>
-          </li>
-        </>
-      );
-    } else {
-      // user logged out
-      return (
-        <>
-          <li className="mr-4 lg:mr-0">
-            <Link
-              href="/api/auth/signin"
-              className="hover:underline text-black"
-            >
-              Login
-            </Link>
-          </li>
-
-          <li>
-            <Link href="/register" className="hover:underline text-black">
-              Sign Up
-            </Link>
-          </li>
-        </>
-      );
-    }
-  };
-
   const toggleDropdown = () => {
-    if (session?.user) {
-      setIsDropdownOpen(!isDropdownOpen);
-    }
+    setIsDropdownOpen(!isDropdownOpen);
   };
 
   const handleSearch = () => {
@@ -102,8 +38,7 @@ const Navbar: React.FC<{}> = () => {
         {/* Mobile Menu Button */}
         <button
           className="lg:hidden"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        >
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
           {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
 
@@ -119,63 +54,80 @@ const Navbar: React.FC<{}> = () => {
               Contact
             </Link>
           </li>
-          {conditionalNavbar()}
         </ul>
 
-        {/* Search Bar */}
-        <div className="hidden lg:flex items-center space-x-2">
-          <input
-            type="text"
-            className="border rounded-2xl px-3 py-1 bg-gray-200"
-            placeholder="Search Your Event"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyPress={handleKeyPress}
-          />
-          <button
-            onClick={handleSearch}
-            className="px-4 py-1 bg-primary rounded-2xl"
-          >
-            Search
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <div className="lg:hidden bg-white absolute top-16 left-0 w-full shadow-md py-4">
-          <ul className="flex flex-col items-center space-y-4">
-            <li>
-              <Link href="/events" className="hover:underline">
-                Events
-              </Link>
-            </li>
-            <li>
-              <Link href="/contact" className="hover:underline">
-                Contact
-              </Link>
-            </li>
-            {conditionalNavbar()}
-            {/* Search Bar in Mobile */}
-            <div className="flex flex-col items-center mt-2 w-4/5">
-              <input
-                type="text"
-                className="border rounded-2xl px-3 py-1 w-full bg-gray-200"
-                placeholder="Search Your Event"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyPress={handleKeyPress}
+        {/* Search Bar and User Authentication */}
+        <div className="hidden lg:flex items-center space-x-4">
+          <div className="relative flex items-center space-x-2">
+            <input
+              type="text"
+              className="border rounded-2xl px-3 py-1 bg-gray-200"
+              placeholder="Search Your Event"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyPress={handleKeyPress}
+            />
+            <button
+              onClick={handleSearch}
+              className="px-4 py-1 hidden bg-primary rounded-2xl">
+              Search
+            </button>
+          </div>
+          {session?.user ? (
+            <div className="relative flex items-center space-x-2">
+              <img
+                src={session.user.image_url || "/default-avatar.png"}
+                width={40}
+                height={40}
+                alt="User Avatar"
+                className="rounded-full border"
               />
               <button
-                onClick={handleSearch}
-                className="mt-2 px-4 py-1 bg-primary rounded-2xl w-full"
-              >
-                Search
+                className="flex items-center space-x-2 hover:underline"
+                onClick={toggleDropdown}>
+                <span>{session.user.name}</span>
+                <ChevronDown size={16} />
               </button>
+              {isDropdownOpen && (
+                <div className="absolute right-0 top-full mt-2 w-40 bg-white border rounded-lg shadow-md transition-all duration-200 ease-in-out transform origin-top-right scale-95">
+                  <ul className="py-2">
+                    <li>
+                      <Link
+                        href="/admin/profile"
+                        className="block px-4 py-2 hover:bg-gray-200">
+                        Profile
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/admin/dashboard"
+                        className="block px-4 py-2 hover:bg-gray-200">
+                        Dashboard{" "}
+                      </Link>
+                    </li>
+                    <li>
+                      <button
+                        onClick={() => signOut()}
+                        className="w-full text-left block px-4 py-2 hover:bg-gray-200">
+                        Logout
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              )}
             </div>
-          </ul>
+          ) : (
+            <div className="flex space-x-4">
+              <Link href="/api/auth/signin" className="hover:underline">
+                Login
+              </Link>
+              <Link href="/register" className="hover:underline">
+                Sign Up
+              </Link>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </nav>
   );
 };

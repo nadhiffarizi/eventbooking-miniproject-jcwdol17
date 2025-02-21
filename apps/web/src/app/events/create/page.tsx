@@ -18,7 +18,7 @@ const CreateEvents: React.FC = () => {
 
   useEffect(() => {
     if (status === "loading") return;
-    if (!session || session.user.role !== "organizer") {
+    if (!session || session.user.role !== "ORGANIZER") {
       router.push("/");
     }
   }, [session, status, router]);

@@ -35,8 +35,12 @@ const EventDetail: React.FC = () => {
           throw new Error(`Error fetching event: ${response.statusText}`);
         }
         const data = await response.json();
+        console.log(data.data);
 
-        setEvent({ ...data.data, speakers: data.data.speaker || "No speaker" }); // 🔹 Pastikan speaker adalah string
+        setEvent({
+          ...data.data,
+          speakers: data.data.speaker || "No speaker"
+        }); //
       } catch (err) {
         setError(err instanceof Error ? err.message : "Unknown error");
       } finally {
@@ -51,8 +55,8 @@ const EventDetail: React.FC = () => {
 
   const handleGetTickets = () => {
     const tickets = [{ id: event?.id, name: event?.name, price: event?.price }];
-    const ticketsString = JSON.stringify(tickets);
-    router.push(`/payment?tickets=${encodeURIComponent(ticketsString)}`);
+    // const ticketsString = JSON.stringify(tickets);
+    router.push(`/payment/${eventId}`);
   };
 
   if (loading)
