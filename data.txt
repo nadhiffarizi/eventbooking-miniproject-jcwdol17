@@ -1,17 +1,17 @@
 Video demo
--- AUTH and Authorization
-1. account creation & roles selection
-- User
-- organizer
-- demonstrate navbar in reflect to roles 
+-- Management Dashboard
+1. Attendee list
+demonstrate event list created by organizer
+demonstrate registrant list per event
 
-2. referral registration & referral generation
-- demonstrate referral is generated 
-- demonstrate using referral
-- demonstrate points reflected in referral owner
-- demonstrate coupon reflected in referral user
+2. notif email
+- demonstrate email received after accepting and rejecting trx
+- demonstrate available seat change in the event list
 
-3. Role-based access 
-- demonstrate cannot redirect to login page when sign in
-- demonstrate cannot go to user profile when sign in as organizer
-- demonstrate cannot go to user admin when sign in as user
+3. dashboard access 
+- show dashboard simple statistic
+- change event details
+
+
+NADHIF_RXUK
+TECHIES_NVBT

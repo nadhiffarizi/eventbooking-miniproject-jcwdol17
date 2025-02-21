@@ -34,9 +34,10 @@ export default function TransactionCard({ trxData }: { trxData: ITrxData }) {
   };
 
   useEffect(() => {
+    refreshStatusTrx();
     setTrxStatus(trxData.payment_status);
     console.log(trxstatus);
-  }, []);
+  }, [page]);
 
   return (
     <div className="w-full h-2/5 lg:max-h-[100px]  px-5 py-5 rounded-md ring-2 ring-red-100 bg-white">
@@ -65,7 +66,7 @@ export default function TransactionCard({ trxData }: { trxData: ITrxData }) {
               <button
                 onClick={async () => {
                   await rejectTrx(session?.user.accessToken, trxData.id);
-                  refreshStatusTrx();
+                  await refreshStatusTrx();
 
                   // console.log(param?.get("page"));
                 }}
@@ -90,7 +91,7 @@ export default function TransactionCard({ trxData }: { trxData: ITrxData }) {
               <button
                 onClick={async () => {
                   await acceptTrx(session?.user.accessToken, trxData.id);
-                  refreshStatusTrx();
+                  await refreshStatusTrx();
                 }}
                 className="  flex hover:bg-green-600 justify-center h-full text-sm font-semibold bg-green-400 rounded-md"
               >

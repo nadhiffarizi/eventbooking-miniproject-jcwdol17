@@ -337,7 +337,7 @@ class TransactionService {
                 status: statusEnum.FAILED,
                 message: "Waiting admin transactions fetched",
                 data: trxData,
-                code: 400
+                code: 200
             }
             return feedback;
 

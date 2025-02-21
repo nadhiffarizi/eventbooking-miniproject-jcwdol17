@@ -38,8 +38,8 @@ export class App {
         //     console.log((new Date()));
         // })
 
-        // cronPointExpiry()
-        // cronCouponExpiry()
+        cronPointExpiry()
+        cronCouponExpiry()
     }
 
     public start() {

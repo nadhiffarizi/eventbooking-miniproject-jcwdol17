@@ -53,6 +53,8 @@ export default function Transactions() {
 
   // for trx Data
   const [trx, setTrx] = useState<ITrxData[]>([]);
+  const [refreshState, setRefresh] = useState<boolean>(false);
+
   // get user data
   useEffect(() => {
     if (status === "authenticated") {
@@ -93,12 +95,12 @@ export default function Transactions() {
         res.then((r) => {
           console.log(r["data"]);
 
-          setTrx(r["data"]);
+          setTrx([...r["data"]]);
         });
       }
     }
     console.log("status now: ", status);
-  }, [status, currPage]);
+  }, [status, currPage, refreshState]);
 
   return (
     <div className="flex justify-center items-center w-screen py-6 ">
@@ -118,7 +120,10 @@ export default function Transactions() {
           <div className="group-hover:stroke-red-600 group-hover:text-red-500 flex justify-end items-center w-full h-[100px] ">
             {previousPage && (
               <Button
-                onClick={() => setCurrPage(currPage - 1)}
+                onClick={() => {
+                  setCurrPage(currPage - 1);
+                  setRefresh(!refreshState);
+                }}
                 type="submit"
                 className="bg-transparent hover:bg-transparent hover:text-red-500 rounded-none  min-w-[100px] w-[100px] h-[40px] text-lg text-black text-opacity-70"
               >
@@ -130,7 +135,7 @@ export default function Transactions() {
               <Button
                 onClick={() => {
                   setCurrPage(currPage + 1);
-                  setBtnTrigger(!btnTrigger);
+                  setRefresh(!refreshState);
                 }}
                 type="submit"
                 className="bg-transparent hover:grou hover:bg-transparent hover:text-red-500 rounded-none  min-w-[100px] w-[100px] h-[40px] text-lg text-black text-opacity-70"

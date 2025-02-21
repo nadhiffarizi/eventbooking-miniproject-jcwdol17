@@ -99,7 +99,7 @@ class UserService {
             // throw feedback
             const feedback: serviceFeedback = {
                 code: 200,
-                data: null,
+                data: "success",
                 message: 'password has been reset successfully ',
                 status: statusEnum.SUCCESS
             }

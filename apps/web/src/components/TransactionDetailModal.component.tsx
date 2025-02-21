@@ -56,7 +56,15 @@ export default function TransactionDetailModal({
             <div className="grid grid-cols-3 gap-2">
               <div className="col-span-2 w-full h-full flex items-center justify-center">
                 <div className="w-[350px] h-[350px] pr-4 ">
-                  {!trxData.payment_proof_link ? (
+                  <img
+                    className="h-full rounded-md ring-1"
+                    src={
+                      trxData.payment_proof_link
+                        ? trxData.payment_proof_link
+                        : "https://www.solving-finance.com/wp-content/uploads/2023/10/Example-of-a-Receipt.jpg"
+                    }
+                  />
+                  {/* {!trxData.payment_proof_link ? (
                     <div className="w-full h-full flex items-center justify-center text-red-500">
                       Payment Proof is Not Available
                     </div>
@@ -69,7 +77,7 @@ export default function TransactionDetailModal({
                           : "https://www.solving-finance.com/wp-content/uploads/2023/10/Example-of-a-Receipt.jpg"
                       }
                     />
-                  )}
+                  )} */}
                 </div>
               </div>
               <div className="col-span-1 w-full h-full py-7 ">
@@ -116,30 +124,32 @@ export default function TransactionDetailModal({
               </div>
             </div>
           </div>
-          <DialogFooter className="flex justify-end items-center ">
-            <DialogClose asChild>
-              <Button
-                onClick={async () => {
-                  await rejectTrx(session?.user.accessToken, trxData.id);
-                  refreshData();
-                }}
-                className="w-[100px] hover:bg-red-800 bg-red-500 text-white"
-              >
-                Reject
-              </Button>
-            </DialogClose>
-            <DialogClose asChild>
-              <Button
-                onClick={async () => {
-                  await acceptTrx(session?.user.accessToken, trxData.id);
-                  refreshData();
-                }}
-                className="w-[100px] hover:bg-slate-500 bg-black text-white"
-              >
-                Accept
-              </Button>
-            </DialogClose>
-          </DialogFooter>
+          {trxData.payment_status === "WAITING ADMIN" && (
+            <DialogFooter className="flex justify-end items-center ">
+              <DialogClose asChild>
+                <Button
+                  onClick={async () => {
+                    await rejectTrx(session?.user.accessToken, trxData.id);
+                    refreshData();
+                  }}
+                  className="w-[100px] hover:bg-red-800 bg-red-500 text-white"
+                >
+                  Reject
+                </Button>
+              </DialogClose>
+              <DialogClose asChild>
+                <Button
+                  onClick={async () => {
+                    await acceptTrx(session?.user.accessToken, trxData.id);
+                    refreshData();
+                  }}
+                  className="w-[100px] hover:bg-slate-500 bg-black text-white"
+                >
+                  Accept
+                </Button>
+              </DialogClose>
+            </DialogFooter>
+          )}
         </DialogContent>
       </Dialog>
     </div>
