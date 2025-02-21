@@ -88,29 +88,44 @@ export const userExistCheck = async (req: Request, mode: string) => {
 // get friend referral if available
 export const getFriendReferral = async (inputReferralCode: string) => {
 
-    if (!inputReferralCode) return null
-    // console.log("use referral code: ", inputReferralCode);
+    // if (!inputReferralCode) return null
+    console.log("use referral code: ", inputReferralCode.trim());
 
     // check friend referral
     const friend = await prisma.user.findFirst({
         where: {
-            referral_code: inputReferralCode.toUpperCase()
+            referral_code: inputReferralCode
         }
     })
 
-    if (!friend) return null
+    if (!friend) { console.log("friend not found"); return }
+    // else {
+    //     console.log(friend);
 
-    // update friend points
+    // }
+
+
+    // // update friend points
     await prisma.user.update({
         where: {
-            email: friend.email,
+            email: friend?.email!,
         }, data: {
-            point_balance: friend.point_balance + 10000,
+            point_balance: Number(friend.point_balance) + 10000,
             point_expired_date: calculateDeadline(friend.point_expired_date, 30), // nanti handle date
             updated_at: new Date(Date.now())
         }
     })
 
+    const friendUpdate = await prisma.user.findFirst({
+        where: {
+            referral_code: inputReferralCode.toUpperCase()
+        }
+    })
+
+    if (!friend) { console.log("friend not found"); } else {
+        console.log("upodate", friendUpdate);
+
+    }
 
     return inputReferralCode;
 

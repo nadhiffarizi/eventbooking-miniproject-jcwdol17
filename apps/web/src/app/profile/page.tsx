@@ -162,11 +162,21 @@ export default function Profile() {
                 String(session?.user.first_name).substring(1)}
             </span>
           </h1>
-          <div className="flex flex-col items-end justify-start w-[500px]">
-            <h1 className="text-lg">
-              Points: Rp. {Number(userData?.point_balance)}
-            </h1>
-            <h1 className="text-lg">Coupon: Rp. {Number(userData?.coupon)}</h1>
+          <div className="flex flex-col items-start justify-start w-[500px] ">
+            <div className="text-lg flex justify-between w-full ">
+              <span>Points: Rp. {Number(userData?.point_balance)}</span>
+              <span>
+                Point Expiry:{" "}
+                {String(userData?.point_expired_date).split("T")[0]}
+              </span>
+            </div>
+            <div className="text-lg flex justify-between w-full ">
+              <span>Coupon: Rp. {Number(userData?.coupon)}</span>
+              <span>
+                {" "}
+                Coupon Expiry: {String(userData?.coupon_expired).split("T")[0]}
+              </span>
+            </div>
           </div>
         </div>
         <div className="w-full h-[600px] flex justify-end ">

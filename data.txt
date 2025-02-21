@@ -1,5 +1,17 @@
-"first_name": "nadhif",
-  "last_name": "farizi",
-  "password": "password",
-  "email": "nadhif@mail.com",
-  "role": "customer"
+Video demo
+-- AUTH and Authorization
+1. account creation & roles selection
+- User
+- organizer
+- demonstrate navbar in reflect to roles 
+
+2. referral registration & referral generation
+- demonstrate referral is generated 
+- demonstrate using referral
+- demonstrate points reflected in referral owner
+- demonstrate coupon reflected in referral user
+
+3. Role-based access 
+- demonstrate cannot redirect to login page when sign in
+- demonstrate cannot go to user profile when sign in as organizer
+- demonstrate cannot go to user admin when sign in as user
